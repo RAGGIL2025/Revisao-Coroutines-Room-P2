@@ -1,132 +1,311 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Corrotinas & Room – Revisão FINAL P2 (23 questões)</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-    body {
-      font-family: 16px 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #6e8efb, #a777e3);
-      margin: 0; padding: 20px; color: #333;
-    }
-    .container {
-      max-width: 1000px; margin: 30px auto;
-      background: #fff; border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      overflow: hidden;
-    }
-    header {
-      background: linear-gradient(120deg, #4c1d95, #7c3aed);
-      color: white; padding: 40px 20px; text-align: center;
-    }
-    h1 { margin: 0; font-size: 2.5em; }
-    .subtitle { font-size: 1.3em; opacity: 0.9; margin-top: 10px; }
-    .quiz { padding: 40px; }
-    .question {
-      background: #f8f5ff; border-radius: 16px;
-      padding: 25px; margin-bottom: 30px;
-      border-left: 6px solid #7c3aed;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-    .question h3 { margin: 0 0 20px 0; color: #4c1d95; font-size: 1.4em; }
-    .options label {
-      display: block; padding: 16px 20px; margin: 12px 0;
-      background: #ede7f6; border-radius: 12px;
-      cursor: pointer; transition: all 0.3s;
-      font-size: 1.1em;
-    }
-    .options label:hover { background: #d8b4fe; transform: translateX(8px); }
-    .options input[type="radio"] { margin-right: 15px; transform: scale(1.4); }
-    .btn {
-      background: #7c3aed; color: white; border: none;
-      padding: 14px 32px; border-radius: 12px; font-size: 1.2em;
-      cursor: pointer; margin-top: 15px; font-weight: 600;
-      transition: 0.3s;
-    }
-    .btn:hover { background: #5b21b6; }
-    .feedback { margin-top: 20px; padding: 20px; border-radius: 12px; display: none; font-size: 1.1em; }
-    .correct   { background: #d4edda; border: 3px solid #28a745; color: #155724; }
-    .incorrect { background: #f8d7da; border: 3px solid #dc3545; color: #721c24; }
-    .score {
-      text-align: center; font-size: 2em; font-weight: bold;
-      padding: 25px; background: linear-gradient(120deg, #e0c3fc, #c9c6fc);
-      border-radius: 16px; color: #4c1d95; margin: 40px 20px;
-    }
-    footer { text-align: center; padding: 30px; background: #1e1e2e; color: #aaa; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Corrotinas & Room - P2 (23 Questões)</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        .question { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .question h3 { color: #555; }
+        .options { margin: 10px 0; }
+        .options label { display: block; margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 3px; cursor: pointer; }
+        .options input[type="radio"] { margin-right: 10px; }
+        .btn { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .btn:hover { background: #0056b3; }
+        .feedback { margin-top: 10px; padding: 10px; border-radius: 5px; display: none; }
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .score { text-align: center; font-size: 20px; font-weight: bold; margin: 20px 0; color: #007bff; }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Corrotinas & Room</h1>
-      <p class="subtitle">Revisão FINAL P2 – 23 questões com explicação completa</p>
-    </header>
+    <div class="container">
+        <h1>Quiz: Corrotinas & Room - Revisão P2 (23 Questões)</h1>
+        <p style="text-align:center;">Clique na opção e depois em "Verificar" para feedback completo!</p>
+        <div id="quiz"></div>
+        <div class="score" id="score">Acertos: 0 / 23</div>
+    </div>
 
-    <div class="quiz" id="quiz"></div>
+    <script>
+        const questions = [
+            {
+                q: "1. Qual é a diferença fundamental entre os construtores de corrotinas `launch` e `async`?",
+                options: [
+                    "a) `async` pode ser cancelado, mas `launch` não pode.",
+                    "b) `launch` é uma função `suspend`, enquanto `async` não é.",
+                    "c) `launch` é usado para operações que não retornam um resultado (fire and forget), enquanto `async` é usado quando se espera um resultado, que pode ser obtido com `await()`.",
+                    "d) `launch` executa na thread principal, enquanto `async` executa em uma thread de background."
+                ],
+                correct: 2,
+                explanation: "Resposta correta: c) `launch` é usado para operações que não retornam um resultado (fire and forget), enquanto `async` é usado quando se espera um resultado, que pode ser obtido com `await()`.<br>Por que as outras estão erradas:<br>a) Errado – ambos podem ser cancelados (são Jobs ou Deferred, que herdam de Job).<br>b) Errado – nenhum dos dois é função suspend; ambos são funções de extensão de CoroutineScope.<br>d) Errado – nenhum dos dois está preso à main thread; o dispatcher define onde roda."
+            },
+            {
+                q: "2. Na biblioteca Room, qual anotação é usada para definir a classe principal do banco de dados, que especifica as entidades e a versão do esquema?",
+                options: ["a) @Entity", "b) @Dao", "c) @Database", "d) @Query"],
+                correct: 2,
+                explanation: "Resposta correta: c) @Database<br>Erradas:<br>a) @Entity → define uma tabela<br>b) @Dao → define a interface de acesso aos dados<br>d) @Query → é usada dentro do DAO, não na classe do banco"
+            },
+            {
+                q: "3. Em Corrotinas Kotlin, qual é a principal função da palavra-chave `suspend` ao marcar uma função?",
+                options: [
+                    "a) Garantir que a função retorne um resultado imediatamente, utilizando cache para operações demoradas.",
+                    "b) Indicar que a função pode pausar sua execução e ser retomada posteriormente, liberando a thread em que estava rodando.",
+                    "c) Forçar a função a ser executada exclusivamente na thread principal (UI Thread).",
+                    "d) Criar automaticamente uma nova thread dedicada para a execução completa da função."
+                ],
+                correct: 1,
+                explanation: "Resposta correta: b) Indicar que a função pode pausar e ser retomada sem bloquear a thread.<br>Erradas:<br>a) Não tem nada a ver com cache<br>c) Não força execução na main thread (pelo contrário, libera ela)<br>d) Não cria thread automaticamente"
+            },
+            {
+                q: "4. Qual `Dispatcher` de Corrotinas é a escolha recomendada para realizar operações de I/O (entrada/saída), como requisições de rede com Retrofit ou acesso ao banco de dados com Room?",
+                options: ["a) Dispatchers.Contextual", "b) Dispatchers.Main", "c) Dispatchers.Default", "d) Dispatchers.IO"],
+                correct: 3,
+                explanation: "Resposta correta: d) Dispatchers.IO<br>Erradas:<br>a) Não existe Dispatchers.Contextual<br>b) Main → é para UI, bloquearia a interface<br>c) Default → é para CPU-intensive (cálculos pesados)"
+            },
+            {
+                q: "5. Na biblioteca Room, qual é a responsabilidade de uma interface ou classe abstrata anotada com `@Dao`?",
+                options: [
+                    "a) Modelar a estrutura de uma tabela no banco de dados, onde cada propriedade representa uma coluna.",
+                    "b) Conectar as entidades (`@Entity`) e os DAOs (`@Dao`), configurando a versão do banco de dados.",
+                    "c) Converter automaticamente os resultados das consultas de JSON para objetos Kotlin.",
+                    "d) Definir os métodos de acesso aos dados, como inserções, atualizações e consultas SQL."
+                ],
+                correct: 3,
+                explanation: "Resposta correta: d) Definir os métodos de acesso (insert, update, delete, queries).<br>Erradas:<br>a) Isso é @Entity<br>b) Isso é @Database<br>c) Isso é feito por TypeConverters ou Gson, não pelo DAO"
+            },
+            {
+                q: "6. Qual é a principal vantagem de usar `viewModelScope` para iniciar corrotinas dentro de uma classe que herda de `ViewModel`?",
+                options: [
+                    "a) Garante que todas as corrotinas sejam executadas no `Dispatchers.IO` por padrão.",
+                    "b) Permite que as corrotinas continuem executando mesmo depois que o aplicativo é fechado pelo usuário.",
+                    "c) Aumenta a prioridade de execução das tarefas de rede em comparação com outras tarefas do sistema.",
+                    "d) Cancela automaticamente todas as corrotinas iniciadas em seu escopo quando a `ViewModel` é destruída."
+                ],
+                correct: 3,
+                explanation: "Resposta correta: d) Cancela automaticamente todas as corrotinas quando a ViewModel é destruída.<br>Erradas:<br>a) Não força IO, você escolhe o dispatcher<br>b) Pelo contrário, ele cancela quando a ViewModel morre<br>c) Não mexe na prioridade do sistema"
+            },
+            {
+                q: "7. Em Kotlin Coroutines, qual é a principal finalidade do `Dispatchers.IO`?",
+                options: [
+                    "a) Executar operações de I/O (Entrada/Saída) que podem bloquear a thread, como chamadas de rede ou acesso ao disco.",
+                    "b) Realizar atualizações na interface do usuário (UI), como modificar textos ou imagens.",
+                    "c) Executar cálculos pesados e intensivos em CPU, como processamento de imagens ou algoritmos complexos.",
+                    "d) Gerenciar o ciclo de vida de uma corrotina, garantindo seu cancelamento quando não for mais necessária."
+                ],
+                correct: 0,
+                explanation: "Resposta correta: a) Operações de I/O que podem bloquear (rede, disco, banco).<br>Erradas:<br>b) Isso é Dispatchers.Main<br>c) Isso é Dispatchers.Default<br>d) Cancelamento é função do Job, não do dispatcher"
+            },
+            {
+                q: "8. Na biblioteca Room, qual anotação é utilizada para definir uma classe que representa uma tabela do banco de dados?",
+                options: ["a) @Database", "b) @PrimaryKey", "c) @Entity", "d) @Dao"],
+                correct: 2,
+                explanation: "Resposta correta: c) @Entity<br>Erradas:<br>a) @Database → é a classe do banco inteiro<br>b) @PrimaryKey → é usada dentro da Entity<br>d) @Dao → interface de acesso"
+            },
+            {
+                q: "9. Qual é a função da palavra-chave `suspend` em uma função Kotlin?",
+                options: [
+                    "a) Ela só pode ser utilizada dentro de uma classe que herda de `RoomDatabase`.",
+                    "b) Ela indica que a função pode pausar sua execução e ser retomada posteriormente, permitindo operações demoradas sem bloquear a thread.",
+                    "c) Ela executa a função automaticamente em uma thread de background para evitar o bloqueio.",
+                    "d) Ela força a função a retornar um objeto do tipo `Job` para controle de ciclo de vida."
+                ],
+                correct: 1,
+                explanation: "Resposta correta: b) Permite pausar e retomar sem bloquear a thread.<br>Erradas:<br>a) Não tem relação com RoomDatabase<br>c) Não executa automaticamente em background (você precisa escolher o dispatcher)<br>d) Funções suspend não retornam Job (quem retorna Job é launch)"
+            },
+            {
+                q: "10. Dentro da arquitetura Room, qual é a responsabilidade de um DAO (Data Access Object)?",
+                options: [
+                    "a) Representar uma única linha de dados em uma tabela do banco de dados.",
+                    "b) Definir a API de acesso ao banco de dados, contendo métodos para inserir, consultar, atualizar e deletar dados.",
+                    "c) Configurar a conexão com o banco de dados, listando as entidades e a versão do esquema.",
+                    "d) Mapear objetos Kotlin para colunas do banco de dados e vice-versa."
+                ],
+                correct: 1,
+                explanation: "Resposta correta: b) Definir a API de acesso (métodos insert/query/update/delete).<br>Erradas:<br>a) Isso é a Entity<br>c) Isso é a classe @Database<br>d) Isso é feito pela Entity + TypeConverters"
+            },
+            {
+                q: "11. A função `withContext(Dispatcher)` é usada para qual finalidade dentro de uma corrotina?",
+                options: [
+                    "a) Lançar uma nova corrotina completamente independente da atual.",
+                    "b) Criar um novo `CoroutineScope` com um dispatcher personalizado.",
+                    "c) Atrasar a execução da corrotina por um tempo determinado, similar à função `delay()`.",
+                    "d) Garantir que o bloco de código seja executado em um `Dispatcher` específico, suspendendo a corrotina atual e retomando-a com o resultado."
+                ],
+                correct: 3,
+                explanation: "Resposta correta: d) Troca o dispatcher para executar aquele bloco e volta depois.<br>Erradas:<br>a) Não lança nova corrotina (fica na mesma)<br>b) Não cria novo scope<br>c) Não é delay"
+            },
+            {
+                q: "12. Qual dos três componentes principais do Room é responsável por conectar as Entidades e os DAOs, além de definir a versão do banco de dados?",
+                options: [
+                    "a) A classe de dados anotada com `@Entity`.",
+                    "b) A classe anotada com `@Database`.",
+                    "c) A interface anotada com `@Dao`.",
+                    "d) O `viewModelScope`."
+                ],
+                correct: 1,
+                explanation: "Resposta correta: b) @Database<br>Erradas:<br>a) Entity é só a tabela<br>c) DAO é só a interface de acesso<br>d) viewModelScope não tem nada a ver com Room"
+            },
+            {
+                q: "13. Em uma classe `@Entity` do Room, qual é o propósito da anotação `@PrimaryKey`?",
+                options: [
+                    "a) Marcar um campo como o identificador único para cada registro na tabela.",
+                    "b) Garantir que o valor do campo nunca poderá ser nulo.",
+                    "c) Definir uma relação de chave estrangeira com outra tabela.",
+                    "d) Indicar que o campo deve ser indexado para otimizar a velocidade das consultas."
+                ],
+                correct: 0,
+                explanation: "Resposta correta: a) Identificador único da linha.<br>Erradas:<br>b) Para não nulo usa @NonNull<br>c) Chave estrangeira é @ForeignKey<br>d) Index é @Index"
+            },
+            {
+                q: "14. De acordo com o material, qual tecnologia antiga e propensa a boilerplate foi simplificada pelo uso de Corrotinas no desenvolvimento Android?",
+                options: [
+                    "a) `AsyncTask` e o padrão de `Callbacks`.",
+                    "b) SQLite.",
+                    "c) Model-View-ViewModel (MVVM).",
+                    "d) Mapeamento Objeto-Relacional (ORM)."
+                ],
+                correct: 0,
+                explanation: "Resposta correta: a) AsyncTask e call-backs<br>Erradas:<br>b) SQLite continua existindo (Room usa ele por baixo)<br>c) MVVM continua existindo<br>d) ORM continua existindo"
+            },
+            {
+                q: "15. Qual `CoroutineScope` é frequentemente utilizado em arquiteturas MVVM no Android por estar vinculado automaticamente ao ciclo de vida do componente e ser ideal para iniciar operações de dados?",
+                options: ["a) lifecycleScope", "b) MainScope", "c) GlobalScope", "d) viewModelScope"],
+                correct: 3,
+                explanation: "Resposta correta: d) viewModelScope<br>Erradas:<br>a) lifecycleScope é para Activity/Fragment<br>b) MainScope não é ligado ao ciclo de vida<br>c) GlobalScope nunca deve ser usado em produção"
+            },
+            {
+                q: "16. A tecnologia de corrotinas em Kotlin simplifica o código assíncrono introduzindo qual conceito que substitui callbacks?",
+                options: ["a) Services", "b) Activities", "c) Scopes", "d) Fragments"],
+                correct: 2,
+                explanation: "Resposta correta: c) Scopes (aceito pelo professor – structured concurrency com Scopes organiza e substitui callbacks soltos)."
+            },
+            {
+                q: "17. No desenvolvimento Android, qual é o principal objetivo do uso de Corrotinas?",
+                options: [
+                    "a) Executar operações de longa duração, como chamadas de rede ou acesso a disco, sem bloquear a thread principal (UI Thread).",
+                    "b) Gerenciar o ciclo de vida dos componentes da UI, como Activities e Fragments.",
+                    "c) Substituir completamente o uso do SQLite para armazenamento de dados local.",
+                    "d) Acelerar o tempo de compilação de projetos Kotlin."
+                ],
+                correct: 0,
+                explanation: "Resposta correta: a) Executar operações longas sem bloquear a UI thread.<br>Erradas:<br>b) Ciclo de vida é feito pelo Lifecycle<br>c) Não substitui SQLite<br>d) Não afeta tempo de compilação"
+            },
+            {
+                q: "18. De onde uma função suspend pode ser chamada?",
+                options: ["a) De qualquer método com Dispatchers.IO", "b) De outra função suspend ou de um Coroutine Builder", "c) De um thread executor", "d) Da função main"],
+                correct: 1,
+                explanation: "Resposta correta: b) De outra função suspend ou de um coroutine builder (launch/async).<br>Erradas:<br>a) Não precisa estar em IO<br>c) Não é de um Thread qualquer<br>d) Não pode ser chamada diretamente do main comum"
+            },
+            {
+                q: "19. Qual Coroutine Builder é mais apropriado para iniciar uma tarefa que não precisa retornar um resultado direto, conhecida como uma operação \"disparar e esquecer\" (fire and forget)?",
+                options: ["a) async()", "b) launch()", "c) runBlocking()", "d) withContext()"],
+                correct: 1,
+                explanation: "Resposta correta: b) launch()<br>Erradas:<br>a) async retorna Deferred (precisa de await)<br>c) runBlocking bloqueia a thread<br>d) withContext não inicia nova corrotina"
+            },
+            {
+                q: "20. Dentro do `CoroutineContext`, qual componente é responsável por definir em qual thread/pool a corrotina roda?",
+                options: ["a) O Job", "b) A função suspend", "c) O Dispatcher", "d) O CoroutineScope"],
+                correct: 2,
+                explanation: "Resposta correta: c) O Dispatcher<br>Erradas:<br>a) Job é hierarquia e cancelamento<br>b) Função suspend não faz parte do contexto<br>d) Scope é o objeto que contém o contexto"
+            },
+            {
+                q: "21. Qual a principal necessidade da sincronização assíncrona do Android?",
+                options: [
+                    "a) Tornar o código mais elegante e legível.",
+                    "b) Evitar que operações longas (rede, banco, I/O) bloqueiem a Main Thread, prevenindo ANR (Application Not Responding) e mantendo a UI responsiva.",
+                    "c) Reduzir o consumo de bateria em dispositivos móveis.",
+                    "d) Permitir múltiplas threads simultâneas para acelerar o processamento."
+                ],
+                correct: 1,
+                explanation: "Resposta correta: b) Não bloquear a thread principal (Main Thread / UI Thread). O Android trava e pode matar seu app (ANR – Application Not Responding) se você fizer operações pesadas ou que demoram (rede, banco de dados, leitura/escrita de arquivos, cálculos longos etc.) na Main Thread. Por isso precisamos de programação assíncrona (corrotinas, RxJava, callbacks etc.) → manter a UI fluida e responsiva.<br>Erradas:<br>a) Elegância é um bônus, não o principal<br>c) Bateria é secundária<br>d) Threads simultâneas podem piorar se mal gerenciadas"
+            },
+            {
+                q: "22. Como a função suspend é chamada e para que ela serve?",
+                options: [
+                    "a) Pode ser chamada de qualquer lugar no código; serve para criar threads automáticas.",
+                    "b) Só de dentro de outra suspend ou coroutine builder (launch/async); serve para pausar execução sem bloquear a thread, permitindo código assíncrono sequencial.",
+                    "c) Diretamente na main(); serve para cache de resultados.",
+                    "d) Apenas em ViewModels; serve para atrasos simples como delay()."
+                ],
+                correct: 1,
+                explanation: "Resposta correta: b) Como é chamada: Só pode ser chamada de dentro de outra função suspend, ou um coroutine builder (launch, async, runBlocking etc.), ou um CoroutineScope (ex: viewModelScope.launch { … }, lifecycleScope.launchWhenStarted { … }). Para que serve: Permite escrever código assíncrono com aparência síncrona (sequencial, sem callbacks aninhados). A função pode “pausar” a execução em pontos de suspensão (ex: delay(), retrofit.await(), roomQuery.await()) sem bloquear a thread, liberando-a para outras tarefas, e depois retoma exatamente de onde parou.<br>Erradas:<br>a) Não pode ser chamada de qualquer lugar<br>c) Não é para cache<br>d) Não é exclusiva de ViewModels nem só para delay"
+            },
+            {
+                q: "23. Qual a diferença entre Dispatchers.Main, Dispatchers.IO, Dispatchers.Default e withContext()?",
+                options: [
+                    "a) Todos são equivalentes para qualquer operação.",
+                    "b) Main: UI updates; IO: rede/banco; Default: CPU pesada; withContext: troca dispatcher temporariamente dentro de uma corrotina.",
+                    "c) Main: rede; IO: UI; Default: delay; withContext: cria nova thread.",
+                    "d) withContext é um dispatcher fixo para background."
+                ],
+                correct: 1,
+                explanation: "Resposta correta: b) Main: Atualizar UI (TextView, RecyclerView); IO: Operações de I/O (rede com Retrofit, Room, arquivos); Default: Cálculos CPU (processamento de listas, JSON); withContext: Não é dispatcher – é função suspend que troca o dispatcher temporariamente para um bloco de código, sem criar nova corrotina.<br>Erradas:<br>a) São bem diferentes<br>c) Inverteu os usos<br>d) withContext não é dispatcher, é uma função"
+            }
+        ];
 
-    <div class="score" id="score">Acertos: 0 / 23</div>
-  </div>
+        let score = 0;
+        const quizDiv = document.getElementById('quiz');
 
-  <footer>Feito com carinho para você gabaritar! • Atualizada em Dez/2025</footer>
+        questions.forEach((question, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.innerHTML = `<h3>${question.q}</h3>`;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            question.options.forEach((option, optIndex) => {
+                const label = document.createElement('label');
+                label.innerHTML = `<input type="radio" name="q${index}" value="${optIndex}"> ${option}`;
+                optionsDiv.appendChild(label);
+            });
+            questionDiv.appendChild(optionsDiv);
+            
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.textContent = 'Verificar resposta';
+            btn.onclick = () => checkAnswer(index);
+            questionDiv.appendChild(btn);
+            
+            const feedback = document.createElement('div');
+            feedback.id = `feedback${index}`;
+            feedback.className = 'feedback';
+            questionDiv.appendChild(feedback);
+            
+            quizDiv.appendChild(questionDiv);
+        });
 
-  <script>
-    const questions = [
-      { q: "1. Diferença fundamental entre launch e async?", o: ["a) async pode ser cancelado, launch não","b) launch é suspend","c) launch = fire and forget, async retorna resultado com await()","d) launch roda na main thread"], c: 2, e: "Correta: c)<br>• a) ambos canceláveis<br>• b) nenhum é suspend<br>• d) dispatcher define a thread" },
-      { q: "2. Anotação da classe principal do banco no Room?", o: ["a) @Entity","b) @Dao","c) @Database","d) @Query"], c: 2, e: "Correta: c) @Database" },
-      { q: "3. Função da palavra-chave suspend?", o: ["a) Cache automático","b) Pausar sem bloquear thread","c) Força UI Thread","d) Cria thread"], c: 1, e: "Correta: b)" },
-      { q: "4. Dispatcher para Retrofit e Room?", o: ["a) Contextual","b) Main","c) Default","d) IO"], c: 3, e: "Correta: d) Dispatchers.IO" },
-      { q: "5. @Dao faz o quê?", o: ["a) Define tabela","b) Conecta banco","c) Converte JSON","d) Métodos insert/query/update/delete"], c: 3, e: "Correta: d)" },
-      { q: "6. Vantagem do viewModelScope?", o: ["a) Força IO","b) Continua após app fechado","c) Aumenta prioridade","d) Cancela tudo automaticamente"], c: 3, e: "Correta: d)" },
-      { q: "7. Dispatchers.IO serve para?", o: ["a) Operações que podem bloquear","b) UI","c) CPU pesada","d) Cancelamento"], c: 0, e: "Correta: a)" },
-      { q: "8. Anotação que cria tabela?", o: ["a) @Database","b) @PrimaryKey","c) @Entity","d) @Dao"], c: 2, e: "Correta: c) @Entity" },
-      { q: "9. suspend faz o quê?", o: ["a) Só em RoomDatabase","b) Pausar sem bloquear","c) Roda em background automático","d) Retorna Job"], c: 1, e: "Correta: b)" },
-      { q: "10. DAO é responsável por?", o: ["a) Uma linha","b) API de acesso","c) Versão do banco","d) Mapear objetos"], c: 1, e: "Correta: b)" },
-      { q: "11. withContext() serve para?", o: ["a) Nova corrotina","b) Novo scope","c) Delay","d) Trocar dispatcher temporariamente"], c: 3, e: "Correta: d)" },
-      { q: "12. Quem conecta Entities e DAOs?", o: ["a) @Entity","b) @Database","c) @Dao","d) viewModelScope"], c: 1, e: "Correta: b) @Database" },
-      { q: "13. @PrimaryKey serve para?", o: ["a) ID único","b) Não nulo","c) Chave estrangeira","d) Índice"], c: 0, e: "Correta: a)" },
-      { q: "14. Corrotinas substituíram principalmente?", o: ["a) AsyncTask e callbacks","b) SQLite","c) MVVM","d) ORM"], c: 0, e: "Correta: a)" },
-      { q: "15. Scope ideal na ViewModel?", o: ["a) lifecycleScope","b) MainScope","c) GlobalScope","d) viewModelScope"], c: 3, e: "Correta: d) viewModelScope" },
-      { q: "16. Conceito que substitui callbacks (professor aceitou)?", o: ["a) Services","b) Activities","c) Scopes","d) Fragments"], c: 2, e: "Correta: c) Scopes (structured concurrency)" },
-      { q: "17. Objetivo principal das corrotinas no Android?", o: ["a) Não bloquear UI Thread","b) Gerenciar ciclo de vida","c) Substituir SQLite","d) Compilar mais rápido"], c: 0, e: "Correta: a)" },
-      { q: "18. Onde chamar função suspend?", o: ["a) Qualquer lugar com IO","b) Dentro de outra suspend ou builder","c) Qualquer thread","d) Direto do main()"], c: 1, e: "Correta: b)" },
-      { q: "19. Builder fire and forget?", o: ["a) async()","b) launch()","c) runBlocking()","d) withContext()"], c: 1, e: "Correta: b) launch()" },
-      { q: "20. No CoroutineContext, quem define a thread?", o: ["a) Job","b) Função suspend","c) Dispatcher","d) CoroutineScope"], c: 2, e: "Correta: c) Dispatcher" },
-      { q: "21. Qual a principal necessidade da programação assíncrona no Android?", o: ["a) Deixar o código mais bonito","b) Evitar ANR – não bloquear a UI Thread","c) Economizar bateria","d) Reduzir tamanho do APK"], c: 1, e: "Correta: b) Evitar ANR (Application Not Responding)" },
-      { q: "22. Como chamar função suspend e para que ela serve?", o: ["a) De qualquer lugar – serve para criar thread","b) Só dentro de corrotina – serve para pausar sem bloquear","c) Direto na Activity – serve para cache","d) Só no ViewModel – serve para delay"], c: 1, e: "Correta: b) Só dentro de corrotina e permite pausar sem bloquear a thread" },
-      { q: "23. Diferença entre Main, IO, Default e withContext()?", o: ["a) Main = CPU, IO = UI, Default = rede","b) Main = UI, IO = rede/banco, Default = CPU, withContext troca dispatcher","c) Todos são iguais","d) withContext é um dispatcher"], c: 1, e: "Correta: b)<br>• Main → UI<br>• IO → rede/banco<br>• Default → CPU pesada<br>• withContext → troca temporária" }
-    ];
-
-    let score = 0;
-    const quiz = document.getElementById("quiz");
-
-    questions.forEach((q => {
-      let html = `<div class="question"><h3>${q.q}</h3><div class="options">`;
-      q.o.forEach((opt, j) => {
-        html += `<label><input type="radio" name="q${questions.indexOf(q)}" value="${j}"> ${opt}</label>`;
-      });
-      html += `</div><button class="btn" onclick="check(${questions.indexOf(q)})">Verificar</button><div id="fb${questions.indexOf(q)}" class="feedback"></div></div>`;
-      quiz.innerHTML += html;
-    });
-
-    window.check = function(i) {
-      const sel = document.querySelector(`input[name="q${i}"]:checked`);
-      const fb = document.getElementById(`fb${i}`);
-      if (!sel) { fb.innerHTML = "Selecione uma opção!"; fb.className = "feedback incorrect"; fb.style.display = "block"; return; }
-      const ans = parseInt(sel.value);
-      if (ans === questions[i].c) {
-        fb.innerHTML = "Correta! " + questions[i].e;
-        fb.className = "feedback correct";
-        score++;
-      } else {
-        fb.innerHTML = "Errada! " + questions[i].e;
-        fb.className = "feedback incorrect";
-      }
-      fb.style.display = "block";
-      document.getElementById("score").innerText = `Acertos: ${score} / 23`;
-      document.querySelectorAll(`input[name="q${i}"]`).forEach(r => r.disabled = true);
-    };
-  </script>
+        function checkAnswer(index) {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const feedback = document.getElementById(`feedback${index}`);
+            
+            if (!selected) {
+                feedback.textContent = 'Selecione uma opção primeiro!';
+                feedback.className = 'feedback incorrect';
+                feedback.style.display = 'block';
+                return;
+            }
+            
+            const answer = parseInt(selected.value);
+            const question = questions[index];
+            
+            if (answer === question.correct) {
+                feedback.innerHTML = `<strong>Correta!</strong><br>${question.explanation}`;
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.innerHTML = `<strong>Errada!</strong><br>${question.explanation}`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            document.getElementById('score').textContent = `Acertos: ${score} / 23`;
+            
+            // Desabilita opções após verificar
+            document.querySelectorAll(`input[name="q${index}"]`).forEach(radio => radio.disabled = true);
+        }
+    </script>
 </body>
 </html>
