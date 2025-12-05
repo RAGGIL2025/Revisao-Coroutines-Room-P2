@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Corrotinas & Room – Revisão FINAL P2 (23 questões)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    body {
+      font-family: 16px 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      margin: 0; padding: 20px; color: #333;
+    }
+    .container {
+      max-width: 1000px; margin: 30px auto;
+      background: #fff; border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    header {
+      background: linear-gradient(120deg, #4c1d95, #7c3aed);
+      color: white; padding: 40px 20px; text-align: center;
+    }
+    h1 { margin: 0; font-size: 2.5em; }
+    .subtitle { font-size: 1.3em; opacity: 0.9; margin-top: 10px; }
+    .quiz { padding: 40px; }
+    .question {
+      background: #f8f5ff; border-radius: 16px;
+      padding: 25px; margin-bottom: 30px;
+      border-left: 6px solid #7c3aed;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    .question h3 { margin: 0 0 20px 0; color: #4c1d95; font-size: 1.4em; }
+    .options label {
+      display: block; padding: 16px 20px; margin: 12px 0;
+      background: #ede7f6; border-radius: 12px;
+      cursor: pointer; transition: all 0.3s;
+      font-size: 1.1em;
+    }
+    .options label:hover { background: #d8b4fe; transform: translateX(8px); }
+    .options input[type="radio"] { margin-right: 15px; transform: scale(1.4); }
+    .btn {
+      background: #7c3aed; color: white; border: none;
+      padding: 14px 32px; border-radius: 12px; font-size: 1.2em;
+      cursor: pointer; margin-top: 15px; font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #5b21b6; }
+    .feedback { margin-top: 20px; padding: 20px; border-radius: 12px; display: none; font-size: 1.1em; }
+    .correct   { background: #d4edda; border: 3px solid #28a745; color: #155724; }
+    .incorrect { background: #f8d7da; border: 3px solid #dc3545; color: #721c24; }
+    .score {
+      text-align: center; font-size: 2em; font-weight: bold;
+      padding: 25px; background: linear-gradient(120deg, #e0c3fc, #c9c6fc);
+      border-radius: 16px; color: #4c1d95; margin: 40px 20px;
+    }
+    footer { text-align: center; padding: 30px; background: #1e1e2e; color: #aaa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Corrotinas & Room</h1>
+      <p class="subtitle">Revisão FINAL P2 – 23 questões com explicação completa</p>
+    </header>
+
+    <div class="quiz" id="quiz"></div>
+
+    <div class="score" id="score">Acertos: 0 / 23</div>
+  </div>
+
+  <footer>Feito com carinho para você gabaritar! • Atualizada em Dez/2025</footer>
+
+  <script>
+    const questions = [
+      { q: "1. Diferença fundamental entre launch e async?", o: ["a) async pode ser cancelado, launch não","b) launch é suspend","c) launch = fire and forget, async retorna resultado com await()","d) launch roda na main thread"], c: 2, e: "Correta: c)<br>• a) ambos canceláveis<br>• b) nenhum é suspend<br>• d) dispatcher define a thread" },
+      { q: "2. Anotação da classe principal do banco no Room?", o: ["a) @Entity","b) @Dao","c) @Database","d) @Query"], c: 2, e: "Correta: c) @Database" },
+      { q: "3. Função da palavra-chave suspend?", o: ["a) Cache automático","b) Pausar sem bloquear thread","c) Força UI Thread","d) Cria thread"], c: 1, e: "Correta: b)" },
+      { q: "4. Dispatcher para Retrofit e Room?", o: ["a) Contextual","b) Main","c) Default","d) IO"], c: 3, e: "Correta: d) Dispatchers.IO" },
+      { q: "5. @Dao faz o quê?", o: ["a) Define tabela","b) Conecta banco","c) Converte JSON","d) Métodos insert/query/update/delete"], c: 3, e: "Correta: d)" },
+      { q: "6. Vantagem do viewModelScope?", o: ["a) Força IO","b) Continua após app fechado","c) Aumenta prioridade","d) Cancela tudo automaticamente"], c: 3, e: "Correta: d)" },
+      { q: "7. Dispatchers.IO serve para?", o: ["a) Operações que podem bloquear","b) UI","c) CPU pesada","d) Cancelamento"], c: 0, e: "Correta: a)" },
+      { q: "8. Anotação que cria tabela?", o: ["a) @Database","b) @PrimaryKey","c) @Entity","d) @Dao"], c: 2, e: "Correta: c) @Entity" },
+      { q: "9. suspend faz o quê?", o: ["a) Só em RoomDatabase","b) Pausar sem bloquear","c) Roda em background automático","d) Retorna Job"], c: 1, e: "Correta: b)" },
+      { q: "10. DAO é responsável por?", o: ["a) Uma linha","b) API de acesso","c) Versão do banco","d) Mapear objetos"], c: 1, e: "Correta: b)" },
+      { q: "11. withContext() serve para?", o: ["a) Nova corrotina","b) Novo scope","c) Delay","d) Trocar dispatcher temporariamente"], c: 3, e: "Correta: d)" },
+      { q: "12. Quem conecta Entities e DAOs?", o: ["a) @Entity","b) @Database","c) @Dao","d) viewModelScope"], c: 1, e: "Correta: b) @Database" },
+      { q: "13. @PrimaryKey serve para?", o: ["a) ID único","b) Não nulo","c) Chave estrangeira","d) Índice"], c: 0, e: "Correta: a)" },
+      { q: "14. Corrotinas substituíram principalmente?", o: ["a) AsyncTask e callbacks","b) SQLite","c) MVVM","d) ORM"], c: 0, e: "Correta: a)" },
+      { q: "15. Scope ideal na ViewModel?", o: ["a) lifecycleScope","b) MainScope","c) GlobalScope","d) viewModelScope"], c: 3, e: "Correta: d) viewModelScope" },
+      { q: "16. Conceito que substitui callbacks (professor aceitou)?", o: ["a) Services","b) Activities","c) Scopes","d) Fragments"], c: 2, e: "Correta: c) Scopes (structured concurrency)" },
+      { q: "17. Objetivo principal das corrotinas no Android?", o: ["a) Não bloquear UI Thread","b) Gerenciar ciclo de vida","c) Substituir SQLite","d) Compilar mais rápido"], c: 0, e: "Correta: a)" },
+      { q: "18. Onde chamar função suspend?", o: ["a) Qualquer lugar com IO","b) Dentro de outra suspend ou builder","c) Qualquer thread","d) Direto do main()"], c: 1, e: "Correta: b)" },
+      { q: "19. Builder fire and forget?", o: ["a) async()","b) launch()","c) runBlocking()","d) withContext()"], c: 1, e: "Correta: b) launch()" },
+      { q: "20. No CoroutineContext, quem define a thread?", o: ["a) Job","b) Função suspend","c) Dispatcher","d) CoroutineScope"], c: 2, e: "Correta: c) Dispatcher" },
+      { q: "21. Qual a principal necessidade da programação assíncrona no Android?", o: ["a) Deixar o código mais bonito","b) Evitar ANR – não bloquear a UI Thread","c) Economizar bateria","d) Reduzir tamanho do APK"], c: 1, e: "Correta: b) Evitar ANR (Application Not Responding)" },
+      { q: "22. Como chamar função suspend e para que ela serve?", o: ["a) De qualquer lugar – serve para criar thread","b) Só dentro de corrotina – serve para pausar sem bloquear","c) Direto na Activity – serve para cache","d) Só no ViewModel – serve para delay"], c: 1, e: "Correta: b) Só dentro de corrotina e permite pausar sem bloquear a thread" },
+      { q: "23. Diferença entre Main, IO, Default e withContext()?", o: ["a) Main = CPU, IO = UI, Default = rede","b) Main = UI, IO = rede/banco, Default = CPU, withContext troca dispatcher","c) Todos são iguais","d) withContext é um dispatcher"], c: 1, e: "Correta: b)<br>• Main → UI<br>• IO → rede/banco<br>• Default → CPU pesada<br>• withContext → troca temporária" }
+    ];
+
+    let score = 0;
+    const quiz = document.getElementById("quiz");
+
+    questions.forEach((q => {
+      let html = `<div class="question"><h3>${q.q}</h3><div class="options">`;
+      q.o.forEach((opt, j) => {
+        html += `<label><input type="radio" name="q${questions.indexOf(q)}" value="${j}"> ${opt}</label>`;
+      });
+      html += `</div><button class="btn" onclick="check(${questions.indexOf(q)})">Verificar</button><div id="fb${questions.indexOf(q)}" class="feedback"></div></div>`;
+      quiz.innerHTML += html;
+    });
+
+    window.check = function(i) {
+      const sel = document.querySelector(`input[name="q${i}"]:checked`);
+      const fb = document.getElementById(`fb${i}`);
+      if (!sel) { fb.innerHTML = "Selecione uma opção!"; fb.className = "feedback incorrect"; fb.style.display = "block"; return; }
+      const ans = parseInt(sel.value);
+      if (ans === questions[i].c) {
+        fb.innerHTML = "Correta! " + questions[i].e;
+        fb.className = "feedback correct";
+        score++;
+      } else {
+        fb.innerHTML = "Errada! " + questions[i].e;
+        fb.className = "feedback incorrect";
+      }
+      fb.style.display = "block";
+      document.getElementById("score").innerText = `Acertos: ${score} / 23`;
+      document.querySelectorAll(`input[name="q${i}"]`).forEach(r => r.disabled = true);
+    };
+  </script>
+</body>
+</html>
